@@ -1,0 +1,125 @@
+{
+  "name": "Google Sheet Email Broadcast Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/187aPnSfEb7SJTc5WThV-HNxBlCdxOx554IpNdi7NQ-k/edit?usp=drivesdk",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "E-mail_list",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "8593f9f6-24a2-4c4f-b16e-df07ecabb379",
+      "name": "Get Email List from Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SuILEKpCWfglJMhH",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail '] }}",
+        "subject": "={{ $('Email Broadcast Form').item.json['Email Subject'] }}",
+        "emailType": "text",
+        "message": "={{ $('Email Broadcast Form').item.json['Email Message'] }}",
+        "options": {}
+      },
+      "id": "9d47f03b-d9d4-4281-beef-459ce7019921",
+      "name": "Send Email to Recipients",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "webhookId": "1ea7b600-929c-4df1-be44-429490a15136",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9ZWDBA94Y6HL45O2",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Email Broadcast",
+        "formDescription": "Send an email to all recipients in the Google Sheet",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Email Subject",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email Message",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Send Emails"
+        }
+      },
+      "id": "65970434-f81c-466f-bcf5-4dfffaa17c20",
+      "name": "Email Broadcast Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "2038d481-6c9f-41f8-86a3-f98054d7d825"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Email List from Sheet": {
+      "main": [
+        [
+          {
+            "node": "Send Email to Recipients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Broadcast Form": {
+      "main": [
+        [
+          {
+            "node": "Get Email List from Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b861653f-854f-4dd5-8e04-e0bfc8c91c71",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "28616f51cd8e02203ec5ffe3f15900b8e43ba9ad0907e98da7241a8685bbb7f1"
+  },
+  "id": "MlSkyY6BOgvZTr2S",
+  "tags": []
+}
